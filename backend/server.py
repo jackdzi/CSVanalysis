@@ -1,60 +1,61 @@
 from flask import Flask, request, jsonify
-import torch
-from transformers import BertTokenizer, BertModel
 from flask_cors import CORS
 import pandas as pd
 from sklearn.cluster import KMeans
-from umap import UMAP
-import matplotlib.pyplot as plt
-import base64
-from io import BytesIO
+import fileio
 
 app = Flask(__name__)
 CORS(app)
 
+cluster_data = {
+    "dataframe": None,
+    "clusters": None,
+    "column": None
+}
 
 @app.route("/vectorize", methods=["POST"])
 def vectorize():
     try:
         file = request.files["file"]
-        df = pd.read_csv(file)
+        df = pd.read_csv(file) #type: ignore
+        column = request.form.get("column")
+        num_clusters = int(request.form.get("clusters", 0) or 0)
 
-        if "text" not in df.columns:
-            return jsonify({"error": 'CSV must contain a "text" column.'}), 400
+        if column not in df.columns:
+            return jsonify({"error": f'CSV must contain a "{column}" column.'}), 400
 
-        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-        model = BertModel.from_pretrained("bert-base-uncased")
+        embeddings = fileio.get_embeddings(df[column].astype(str))
 
-        def embed_text(text):
-            inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-            outputs = model(**inputs)
-            return outputs.last_hidden_state.mean(dim=1).squeeze().detach().numpy()
-
-        embeddings = df["text"].astype(str).apply(embed_text).tolist()
-
-        kmeans = KMeans(n_clusters=3, random_state=42)
+        kmeans = KMeans(n_clusters=num_clusters, random_state=42)
         clusters = kmeans.fit_predict(embeddings)
 
-        reducer = UMAP()
-        embedding = reducer.fit_transform(embeddings)
+        cluster_data["dataframe"] = df
+        cluster_data["clusters"] = clusters
+        cluster_data["column"] = column
 
-        plt.figure(figsize=(8, 6))
-        scatter = plt.scatter(
-            embedding[:, 0], embedding[:, 1], c=clusters, cmap="plasma", s=5
-        )
-        plt.colorbar(scatter, label="Cluster")
+        # 1 seems to be good, 0 is bad
+        # fileio.print_cluster_rows(df["text"].astype(str), clusters, 1)
 
-        buf = BytesIO()
-        plt.savefig(buf, format="png")
-        plt.close()
-        buf.seek(0)
-        image_base64 = base64.b64encode(buf.read()).decode("utf-8")
+        image_base64 = fileio.generate_umap_plot(embeddings, clusters)
 
         return jsonify({"clusters": clusters.tolist(), "umap_graph": image_base64}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/clusters", methods=["POST"])
+def returnRows():
+    if any(value is None for value in cluster_data.values()):
+        return jsonify({"error": "dataframe uninitialized"}), 400
+
+    cluster_index = int(request.form.get("cluster"))
+
+    try:
+        filtered_rows = cluster_data["dataframe"][cluster_data["clusters"] == cluster_index]
+        return jsonify({"clusters": filtered_rows.to_dict(orient="records")}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
