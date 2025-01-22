@@ -72,7 +72,7 @@ function FileUploader() {
         onChange={handleNumClustersChange}
       />
       <div className="mb-4"></div>
-      <button onClick={handleSubmit}>Upload and Vectorize</button>
+      <button className="mb-2" onClick={handleSubmit}>Upload and Vectorize</button>
       {loading ? (
         <Spinner />
       ) : (
@@ -80,7 +80,6 @@ function FileUploader() {
           {error && <p className="text-red-500">{error}</p>}
           {vectors.length > 0 && (
             <div>
-              <h2 className="pb-4">Vectorization Results</h2>
               {image && (
                 <div>
                   <img src={`data:image/png;base64,${image}`} alt="UMAP Graph" />
