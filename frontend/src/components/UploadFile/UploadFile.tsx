@@ -37,7 +37,7 @@ function FileUploader() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://10.223.131.34:10000/vectorize",
+        "https://csvanalysis-kbir.onrender.com/vectorize",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

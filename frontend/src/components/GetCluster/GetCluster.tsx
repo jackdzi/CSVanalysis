@@ -19,7 +19,7 @@ function GetCluster() {
 
     try {
       const response = await axios.post(
-        "http://10.223.131.34:10000/clusters",
+        "https://csvanalysis-kbir.onrender.com/clusters",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
