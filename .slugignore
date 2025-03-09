@@ -1,0 +1,10 @@
+# Example .slugignore file
+/frontend/     # Exclude the entire frontend directory
+*.md           # Exclude markdown files
+/tests/        # Exclude test directories
+.git*          # Exclude git files
+/docs/         # Exclude documentation
+*.pyc          # Exclude Python compiled files
+__pycache__/   # Exclude Python cache directories
+.vscode/       # Exclude editor configs
+node_modules/  # Exclude Node.js modules if not needed
