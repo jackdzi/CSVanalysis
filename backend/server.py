@@ -69,6 +69,6 @@ def returnRows():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
-    print(f"Starting server on port {port} with HOST='0.0.0.0'")
+    port = 10000
+    print("Starting server on port 10000")
     app.run(host='0.0.0.0', port=port)

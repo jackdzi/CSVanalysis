@@ -37,7 +37,7 @@ function FileUploader() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://csvanalysis-production-46ec.up.railway.app/vectorize",
+        "http://127.0.0.1:10000/vectorize",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
