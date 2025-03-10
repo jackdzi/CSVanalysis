@@ -5,6 +5,7 @@ import base64
 from io import BytesIO
 
 def get_embeddings(text_series):
+    print("Embedding")
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
     model = BertModel.from_pretrained("bert-base-uncased")
 
