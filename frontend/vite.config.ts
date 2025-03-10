@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   preview: {
-    allowedHosts: ['ideal-miracle-production.up.railway.app'],
+    allowedHosts: ['csvanalysis.up.railway.app'],
   },
 })
