@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+import resource
 from flask_cors import CORS
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -15,6 +16,16 @@ cluster_data = {
     "clusters": None,
     "column": None
 }
+
+def limit_memory(max_mem_bytes):
+    try:
+        soft, hard = resource.getrlimit(resource.RLIMIT_AS)
+        resource.setrlimit(resource.RLIMIT_AS, (max_mem_bytes, hard))
+    except Exception as e:
+        print(f"Warning: Could not set memory limit: {e}")
+
+# Limit to 6GB to stay safely under 7GB
+limit_memory(6 * 1024 * 1024 * 1024)
 
 @app.route('/')
 def home():

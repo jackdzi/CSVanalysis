@@ -1,8 +1,10 @@
 from transformers import BertTokenizer, BertModel
+import gc
 from umap import UMAP
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+import nump
 
 def get_embeddings(text_series):
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
@@ -15,9 +17,13 @@ def get_embeddings(text_series):
 
     return text_series.apply(embed_text).tolist()
 
+
 def generate_umap_plot(embeddings, clusters):
-    reducer = UMAP()
+    reducer = UMAP(n_neighbors=15, min_dist=0.1, n_components=2,
+                   metric='euclidean', low_memory=True)
     embedding = reducer.fit_transform(embeddings)
+    if embeddings.dtype != np.float32:
+        embeddings = embeddings.astype(np.float32)
 
     plt.figure(figsize=(8, 6))
     scatter = plt.scatter(
