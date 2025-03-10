@@ -32,6 +32,7 @@ def vectorize():
             return jsonify({"error": f'CSV must contain a "{column}" column.'}), 400
 
         embeddings = fileio.get_embeddings(df[column].astype(str))
+        print("Clustering")
 
         kmeans = KMeans(n_clusters=num_clusters, random_state=42)
         clusters = kmeans.fit_predict(embeddings)
@@ -43,8 +44,10 @@ def vectorize():
         # 1 seems to be good, 0 is bad
         # fileio.print_cluster_rows(df["text"].astype(str), clusters, 1)
 
+        print("Plotting")
         image_base64 = fileio.generate_umap_plot(embeddings, clusters)
 
+        print("Jsonning")
         return jsonify({"clusters": clusters.tolist(), "umap_graph": image_base64}), 200
 
     except Exception as e:
