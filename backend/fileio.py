@@ -1,10 +1,9 @@
 from transformers import BertTokenizer, BertModel
-import gc
 from umap import UMAP
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
-import nump
+import numpy as np
 
 def get_embeddings(text_series):
     tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
