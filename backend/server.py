@@ -14,7 +14,6 @@ cluster_data = {
     "column": None
 }
 
-# Limit to 6GB to stay safely under 7GB
 
 @app.route('/')
 def home():
