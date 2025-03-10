@@ -7,9 +7,7 @@ from sklearn.cluster import KMeans
 import fileio
 
 app = Flask(__name__)
-CORS(app, origins="*",
-     allow_headers=["Content-Type", "Authorization"],
-     methods=["GET", "POST", "OPTIONS"])
+CORS(app)
 
 cluster_data = {
     "dataframe": None,
@@ -77,4 +75,6 @@ def returnRows():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
+    port = int(os.environ.get('PORT', 10000))
+    print(f"Starting server on port {port} with HOST='0.0.0.0'")
+    app.run(host='0.0.0.0', port=port)
