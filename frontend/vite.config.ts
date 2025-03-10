@@ -7,4 +7,7 @@ export default defineConfig({
   server: {
     allowedHosts: ['csvanalysis.up.railway.app'],
   },
+  preview: {
+    allowedHosts: ['csvanalysis.up.railway.app'],
+  },
 })
