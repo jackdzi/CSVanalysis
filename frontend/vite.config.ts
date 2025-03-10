@@ -5,12 +5,22 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ['csvanalysis.up.railway.app'],
+    cors: {
+			origin: ['https://csvanalysis.up.railway.app', 'csvanalysis.up.railway.app', 'http://localhost:5173'],
+			methods: ['GET', 'POST'],
+			allowedHeaders: ['Content-Type']
+		},
+    allowedHosts: ['https://csvanalysis.up.railway.app', 'csvanalysis.up.railway.app'],
     host: '0.0.0.0',
     port: 8080,
   },
   preview: {
-    allowedHosts: ['csvanalysis.up.railway.app'],
+    cors: {
+			origin: ['https://csvanalysis.up.railway.app', 'csvanalysis.up.railway.app', 'http://localhost:5173'],
+			methods: ['GET', 'POST'],
+			allowedHeaders: ['Content-Type']
+		},
+    allowedHosts: ['https://csvanalysis.up.railway.app', 'csvanalysis.up.railway.app'],
     host: '0.0.0.0',
     port: 8080,
   },
