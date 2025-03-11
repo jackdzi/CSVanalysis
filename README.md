@@ -6,4 +6,7 @@ A data visualization tool that converts text columns from a CSV file into embedd
 
 Deploying the backend was tough due to the high memory usage of the embedding model, so I made a quick showcase of how it works.
 
-![Showcase](video.mp4)
+
+
+https://github.com/user-attachments/assets/714da635-fb76-4a50-ba22-01790919858c
+
