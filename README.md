@@ -4,7 +4,7 @@ A data visualization tool that converts text columns from a CSV file into embedd
 
 ## Showcase
 
-Deploying the backend was tough due to the high memory usage of the embedding model, so I made a quick showcase of how it works.
+Deploying the backend was a challenge due to the high memory usage of the embedding model, so I made a quick showcase of how it works instead.
 
 
 
